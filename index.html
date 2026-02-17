@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASAD-X - Giriş</title>
+    <link rel="stylesheet" href="css/style.css">
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-header">
+            <h1>ASAD-X</h1>
+            <p>Afet Sonrası Acil Destek ve Haritalama Sistemi</p>
+        </div>
+        
+        <div class="form-wrapper">
+            <!-- Giriş Formu -->
+            <form id="loginForm" class="active-form">
+                <h2>Giriş Yap</h2>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="loginUsername" placeholder="Kullanıcı Adı" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="loginPassword" placeholder="Şifre" required>
+                </div>
+                <button type="submit" class="btn-primary">Giriş Yap</button>
+                <p class="switch-form">Hesabın yok mu? <a href="#" id="showRegister">Kayıt Ol</a></p>
+            </form>
+
+            <!-- Kayıt Formu -->
+            <form id="registerForm" class="hidden-form">
+                <h2>Kayıt Ol</h2>
+                <div class="input-group">
+                    <i class="fas fa-user"></i>
+                    <input type="text" id="regUsername" placeholder="Kullanıcı Adı" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-id-card"></i>
+                    <input type="text" id="regName" placeholder="Ad Soyad" required>
+                </div>
+                <div class="input-group">
+                    <i class="fas fa-lock"></i>
+                    <input type="password" id="regPassword" placeholder="Şifre" required>
+                </div>
+                
+                <div class="input-group">
+                    <i class="fas fa-user-tag"></i>
+                    <select id="regRole" required>
+                        <option value="kullanici">Kullanıcı (Afetzede)</option>
+                        <option value="doktor">Doktor</option>
+                        <option value="guvenlik">Güvenlik Görevlisi</option>
+                    </select>
+                </div>
+
+                <!-- Kullanıcıya özel alanlar -->
+                <div id="userFields" class="conditional-fields">
+                    <div class="input-group">
+                        <i class="fas fa-wheelchair"></i>
+                        <input type="text" id="regDisability" placeholder="Engel Durumu (Varsa)">
+                    </div>
+                    <div class="input-group">
+                        <i class="fas fa-hand-holding-medical"></i>
+                        <input type="text" id="regNeeds" placeholder="Acil İhtiyaçlar">
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-primary">Kayıt Ol</button>
+                <p class="switch-form">Zaten hesabın var mı? <a href="#" id="showLogin">Giriş Yap</a></p>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/auth.js"></script>
+</body>
+</html>

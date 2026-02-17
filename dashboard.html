@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ASAD-X - Panel</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+</head>
+<body class="dashboard-body">
+    <nav>
+        <div class="logo">ASAD-X</div>
+        <div class="user-info">
+            <span id="userNameDisplay">Kullanıcı Adı</span>
+            <span id="userRoleDisplay" class="badge">Rol</span>
+        </div>
+        <ul>
+            <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Çıkış</a></li>
+        </ul>
+    </nav>
+
+    <!-- Duyuru Bandı (Ticker) - Layout dışına alındı -->
+    <div id="announcementTicker" class="announcement-ticker" style="display:none;">
+        <div class="ticker-content">
+            <span id="tickerText">Duyurular yükleniyor...</span>
+        </div>
+        <button id="closeTickerBtn" style="background:none; border:none; color:white; cursor:pointer; font-weight:bold;">&times;</button>
+    </div>
+
+    <div class="dashboard-content">
+        <!-- Sol Panel: Listeler ve Filtreler -->
+        <div class="sidebar" id="sidebar">
+            <div id="sidebarHeader">
+                <h3>Konteynerlar / Kişiler</h3>
+                <!-- İstatistik Butonu (Herkes için görünür) -->
+                <button id="showStatsBtn" class="btn-primary" style="width:100%; margin-bottom: 10px; background-color: #8e44ad;">
+                    <i class="fas fa-chart-pie"></i> Durum İstatistikleri
+                </button>
+                
+                <div class="filter-controls" id="filterControls" style="display:none;">
+                    <hr style="margin: 10px 0; border: 0; border-top: 1px solid #ddd;">
+
+                    <label style="font-size: 0.9rem; font-weight: bold; display: block; margin-bottom: 5px;">Filtrele:</label>
+                    <select id="filterNeeds">
+                        <option value="all">Tümü</option>
+                        <option value="emergency">Sadece Acil Durumlar</option>
+                        <option value="medical">İlaç/Tıbbi İhtiyaç</option>
+                        <option value="food">Gıda/Su İhtiyacı</option>
+                        <option value="heating">Isınma İhtiyacı</option>
+                        <option value="baby">Bebek İhtiyacı</option>
+                    </select>
+
+                    <div style="margin-top: 10px; border: 1px solid #eee; padding: 5px; border-radius: 4px;">
+                        <label style="font-size: 0.8rem; font-weight: bold; display: block; margin-bottom: 5px;">Kaynak Noktaları:</label>
+                        <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                            <label style="font-size: 0.8rem;"><input type="checkbox" class="resource-filter" value="water" checked> Su</label>
+                            <label style="font-size: 0.8rem;"><input type="checkbox" class="resource-filter" value="food" checked> Yemek</label>
+                            <label style="font-size: 0.8rem;"><input type="checkbox" class="resource-filter" value="medical" checked> Sağlık</label>
+                            <label style="font-size: 0.8rem;"><input type="checkbox" class="resource-filter" value="tent" checked> Çadır</label>
+                        </div>
+                    </div>
+
+                    <hr style="margin: 15px 0; border: 0; border-top: 1px solid #ddd;">
+                    
+                    <label style="font-size: 0.9rem; font-weight: bold; display: block; margin-bottom: 5px;">Yardım Noktası Ekle:</label>
+                    <p style="font-size: 0.8rem; color: #666;">Haritaya tıklayıp konum seçin, sonra ekleyin.</p>
+                    <select id="resourceType" style="margin-bottom: 5px;">
+                        <option value="water">Su Dağıtım</option>
+                        <option value="food">Yemek Dağıtım</option>
+                        <option value="medical">Sahra Hastanesi</option>
+                        <option value="tent">Çadır Kent</option>
+                    </select>
+                    <button id="addResourceBtn" class="btn-primary" style="width:100%; font-size: 0.9rem; background-color: #27ae60;" disabled>
+                        <i class="fas fa-plus-circle"></i> Nokta Ekle
+                    </button>
+
+                    <hr style="margin: 15px 0; border: 0; border-top: 1px solid #ddd;">
+
+                    <label style="font-size: 0.9rem; font-weight: bold; display: block; margin-bottom: 5px;">Duyuru Yayınla:</label>
+                    <input type="text" id="announcementTitle" placeholder="Başlık" style="width:100%; margin-bottom:5px; padding:5px; border:1px solid #ddd; border-radius:3px;">
+                    <textarea id="announcementContent" placeholder="Mesajınız..." style="width:100%; height:50px; margin-bottom:5px; padding:5px; border:1px solid #ddd; border-radius:3px; resize:vertical;"></textarea>
+                    <select id="announcementType" style="width:100%; margin-bottom:5px; padding:5px;">
+                        <option value="info">Bilgilendirme (Mavi)</option>
+                        <option value="warning">Uyarı (Sarı)</option>
+                        <option value="danger">Acil Durum (Kırmızı)</option>
+                    </select>
+                    <button id="addAnnouncementBtn" class="btn-primary" style="width:100%; font-size: 0.9rem; background-color: #e67e22;">
+                        <i class="fas fa-bullhorn"></i> Yayınla
+                    </button>
+                </div>
+            </div>
+            
+            <div id="listContainer" class="list-container">
+                <!-- Dinamik liste buraya gelecek -->
+                <p style="text-align:center; color:#999; margin-top:20px;">Yükleniyor...</p>
+            </div>
+
+            <!-- Son Aktiviteler (Log) -->
+            <div id="activityLog" style="border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px; max-height: 150px; overflow-y: auto;">
+                <h4 style="font-size: 0.9rem; color: #7f8c8d; margin-bottom: 5px;">Son Aktiviteler</h4>
+                <div id="activityList" style="font-size: 0.8rem;">
+                    <!-- Loglar buraya -->
+                </div>
+            </div>
+
+            <!-- Kullanıcı için Konteyner Ekleme Alanı -->
+            <div id="userActions" style="display:none; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;">
+                <h4>Konum Bildir</h4>
+                <p style="font-size: 0.8rem; color: #666;">Haritaya tıklayarak veya GPS ile konumunuzu belirleyin.</p>
+                <button id="findMeBtn" class="btn-primary" style="width:100%; margin-top:10px; background-color: #3498db;"><i class="fas fa-location-crosshairs"></i> Konumumu Bul</button>
+                <button id="saveLocationBtn" class="btn-primary" style="width:100%; margin-top:10px;" disabled>Konumu Kaydet</button>
+                
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
+
+                <h4>Akıllı Rota (En Yakın)</h4>
+                <p style="font-size: 0.8rem; color: #666;">Size en yakın yardım noktasını bulup rota çizer.</p>
+                <div style="display:flex; gap:5px; flex-wrap:wrap; margin-top:10px;">
+                    <button class="btn-smart-route" data-type="water" style="flex:1; background:#3498db; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer;"><i class="fas fa-faucet"></i> Su</button>
+                    <button class="btn-smart-route" data-type="food" style="flex:1; background:#e67e22; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer;"><i class="fas fa-utensils"></i> Yemek</button>
+                    <button class="btn-smart-route" data-type="medical" style="flex:1; background:#e74c3c; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer;"><i class="fas fa-clinic-medical"></i> Sağlık</button>
+                </div>
+                <div id="routeInfo" style="margin-top:10px; font-size:0.9rem; color:#2c3e50; font-weight:bold;"></div>
+
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
+
+                <h4>Durum ve İhtiyaç Bildir</h4>
+                <p style="font-size: 0.8rem; color: #666;">İhtiyaçlarınızı seçin ve barınma detaylarını girin.</p>
+                
+                <div class="needs-form" style="margin-top: 10px;">
+                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="need" value="Su"> Su</label>
+                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="need" value="Gıda"> Gıda</label>
+                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="need" value="Isınma"> Isınma (Battaniye/Isıtıcı)</label>
+                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="need" value="İlaç"> İlaç / Tıbbi Malzeme</label>
+                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="need" value="Bebek"> Bebek Ürünü (Mama/Bez)</label>
+                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="need" value="Kıyafet"> Kıyafet</label>
+                </div>
+
+                <div class="input-group" style="margin-top: 10px;">
+                    <i class="fas fa-home"></i>
+                    <input type="text" id="shelterInfo" placeholder="Barınma Detayı (Örn: Konteyner A-12, Çadır 5)">
+                </div>
+
+                <button id="updateStatusBtn" class="btn-primary" style="width:100%; margin-top:10px; background-color: #f39c12;">Bilgileri Güncelle</button>
+                
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
+                
+                <h4>Acil Durum</h4>
+                <p style="font-size: 0.8rem; color: #666;">Hayati tehlike veya acil tıbbi yardım durumunda bu butona basın.</p>
+                <button id="emergencyBtn" class="btn-primary" style="background-color: #c0392b; width:100%; margin-top:10px; padding: 15px; font-size: 1.1rem;">
+                    <i class="fas fa-exclamation-triangle"></i> ACİL YARDIM ÇAĞRISI
+                </button>
+            </div>
+        </div>
+
+        <!-- Sağ Panel: Harita -->
+        <div class="map-container">
+            <div id="map"></div>
+        </div>
+    </div>
+
+    <!-- Leaflet JS -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+    
+    <!-- App Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/app.js"></script>
+
+    <!-- Notes Modal -->
+    <div id="notesModal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <h3 id="modalUserName">Kullanıcı Adı</h3>
+            <div id="modalNotesList" class="notes-list">
+                <!-- Notlar buraya gelecek -->
+            </div>
+            <div class="add-note-form">
+                <textarea id="newNoteText" placeholder="Notunuzu buraya yazın..."></textarea>
+                <button id="saveNoteBtn" class="btn-primary">Not Ekle</button>
+                <button id="resolveEmergencyBtn" class="btn-primary" style="background-color: #27ae60; margin-top: 10px; display: none;">
+                    <i class="fas fa-check"></i> Acil Durumu Çözüldü İşaretle
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Stats Modal -->
+    <div id="statsModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close-stats-modal">&times;</span>
+            <h3><i class="fas fa-chart-bar"></i> Afet Durum Paneli</h3>
+            <div id="statsContent" style="margin-top:20px;">
+                <!-- İstatistikler Buraya -->
+            </div>
+        </div>
+    </div>
+</body>
+</html>
