@@ -20,6 +20,122 @@ document.addEventListener('DOMContentLoaded', () => {
         window.location.href = 'index.html';
     });
 
+    // --- KAYIP İLANLARI (YENİ) ---
+    const openMissingBtn = document.getElementById('openMissingPersonsBtn');
+    const closeMissingBtn = document.querySelector('.close-missing-modal');
+    const addMissingBtn = document.getElementById('addMissingPersonBtn');
+    const missingModal = document.getElementById('missingPersonsModal');
+
+    if (openMissingBtn) {
+        openMissingBtn.addEventListener('click', () => {
+            if (missingModal) {
+                missingModal.style.display = 'block';
+                loadMissingPersons();
+            }
+        });
+    }
+
+    if (closeMissingBtn) {
+        closeMissingBtn.addEventListener('click', () => {
+            if (missingModal) missingModal.style.display = 'none';
+        });
+    }
+
+    if (addMissingBtn) {
+        addMissingBtn.addEventListener('click', () => {
+            const name = document.getElementById('missingName').value;
+            const age = document.getElementById('missingAge').value;
+            const location = document.getElementById('missingLocation').value;
+            const contact = document.getElementById('missingContact').value;
+            const description = document.getElementById('missingDescription').value;
+
+            if (!name || !contact) {
+                alert('Lütfen en azından İsim ve İletişim bilgilerini giriniz.');
+                return;
+            }
+
+            const currentUser = DataManager.getCurrentUser();
+            const newPerson = {
+                name,
+                age,
+                location,
+                contact,
+                description,
+                addedBy: currentUser.name,
+                addedById: currentUser.id
+            };
+
+            DataManager.saveMissingPerson(newPerson);
+            alert('Kayıp ilanı yayınlandı.');
+            
+            // Formu temizle
+            document.getElementById('missingName').value = '';
+            document.getElementById('missingAge').value = '';
+            document.getElementById('missingLocation').value = '';
+            document.getElementById('missingContact').value = '';
+            document.getElementById('missingDescription').value = '';
+            
+            loadMissingPersons();
+        });
+    }
+
+    function loadMissingPersons() {
+        const listDiv = document.getElementById('missingPersonsList');
+        if (!listDiv) return;
+        
+        const persons = DataManager.getMissingPersons();
+        listDiv.innerHTML = '';
+
+        if (persons.length === 0) {
+            listDiv.innerHTML = '<p style="text-align:center; color:#999; padding:20px;">Henüz kayıp ilanı yok.</p>';
+            return;
+        }
+
+        // Yeniden eskiye sırala
+        persons.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+        persons.forEach(p => {
+            const div = document.createElement('div');
+            div.style.background = 'white';
+            div.style.border = '1px solid #eee';
+            div.style.padding = '10px';
+            div.style.marginBottom = '10px';
+            div.style.borderRadius = '5px';
+            div.style.boxShadow = '0 1px 3px rgba(0,0,0,0.05)';
+            
+            const currentUser = DataManager.getCurrentUser();
+            let deleteBtn = '';
+            if (currentUser.role !== 'kullanici' || currentUser.id === p.addedById) {
+                deleteBtn = `
+                    <button onclick="deleteMissingPerson('${p.id}')" style="float:right; background:#e74c3c; color:white; border:none; padding:5px 10px; border-radius:3px; cursor:pointer; font-size:0.8rem;">
+                        <i class="fas fa-trash"></i> Kaldır
+                    </button>
+                `;
+            }
+
+            div.innerHTML = `
+                ${deleteBtn}
+                <h4 style="margin:0; color:#c0392b;">${p.name} <small style="color:#666; font-weight:normal;">(${p.age || '?'} Yaş)</small></h4>
+                <small style="color:#999;">${new Date(p.createdAt).toLocaleDateString()}</small>
+                <div style="margin-top:5px; font-size:0.9rem;">
+                    <p style="margin:2px 0;"><strong>Son Konum:</strong> ${p.location || 'Bilinmiyor'}</p>
+                    <p style="margin:2px 0;"><strong>İletişim:</strong> ${p.contact}</p>
+                    <p style="margin:5px 0; color:#555; font-style:italic;">"${p.description || 'Açıklama yok.'}"</p>
+                    <p style="margin:0; font-size:0.8rem; color:#999; margin-top:5px;">İlan Sahibi: ${p.addedBy}</p>
+                </div>
+            `;
+            listDiv.appendChild(div);
+        });
+    }
+
+    window.deleteMissingPerson = function(id) {
+        if (confirm('Bu kayıp ilanını kaldırmak istediğinize emin misiniz?')) {
+            if (DataManager.deleteMissingPerson(id)) {
+                loadMissingPersons();
+            }
+        }
+    };
+
     // Haritayı Başlat
     MapManager.init('map', [37.0662, 37.3833]); // Varsayılan Gaziantep
 
@@ -32,6 +148,23 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Haritadaki verileri yükle
     loadMapData();
+
+    // Modal Dışına Tıklayınca Kapatma (Global)
+    window.onclick = function(event) {
+        const notesModal = document.getElementById('notesModal');
+        const missingModal = document.getElementById('missingPersonsModal');
+        const statsModal = document.getElementById('statsModal');
+        
+        if (notesModal && event.target == notesModal) {
+            notesModal.style.display = 'none';
+        }
+        if (missingModal && event.target == missingModal) {
+            missingModal.style.display = 'none';
+        }
+        if (statsModal && event.target == statsModal) {
+            statsModal.style.display = 'none';
+        }
+    };
 
     // Yeni Özellikler: Duyurular, Akıllı Rota, İstatistikler
     setupAnnouncements();
@@ -267,6 +400,12 @@ function setupStatistics() {
         closeStatsBtn.addEventListener('click', () => {
             document.getElementById('statsModal').style.display = 'none';
         });
+    }
+
+    // Explicit modal initialization fix
+    const statsModal = document.getElementById('statsModal');
+    if (statsModal) {
+        statsModal.style.zIndex = '3000';
     }
 }
 
@@ -539,12 +678,17 @@ function setupOfficialInterface(user) {
         if (!selectedResourceLat || !selectedResourceLng) return;
 
         const type = resourceType.value;
+        const quantity = document.getElementById('resourceQuantity').value;
+        const unit = document.getElementById('resourceUnit').value;
+
         const newResource = {
             type: type,
             lat: selectedResourceLat,
             lng: selectedResourceLng,
             addedBy: user.name,
-            createdAt: new Date().toISOString()
+            createdAt: new Date().toISOString(),
+            quantity: quantity ? parseInt(quantity) : 0,
+            unit: unit || 'Adet'
         };
 
         DataManager.saveResource(newResource);
@@ -553,6 +697,8 @@ function setupOfficialInterface(user) {
         // Reset
         addResourceBtn.disabled = true;
         addResourceBtn.innerHTML = '<i class="fas fa-plus-circle"></i> Nokta Ekle';
+        document.getElementById('resourceQuantity').value = '';
+        document.getElementById('resourceUnit').value = '';
         selectedResourceLat = null;
         selectedResourceLng = null;
         
@@ -788,17 +934,29 @@ function loadResources(filter = 'all') {
                 iconType = 'tent'; iconColor = '#27ae60'; iconClass = 'fa-campground'; break;
         }
 
+        const quantity = res.quantity !== undefined ? res.quantity : 0;
+        const unit = res.unit || 'Adet';
+
         let popupContent = `
             <div style="text-align:center; min-width: 150px;">
                 <h4 style="color:${iconColor}; margin:0 0 5px 0;"><i class="fas ${iconClass}"></i> ${getResourceName(res.type)}</h4>
-                <p style="margin:0; font-size:0.9rem;">Ekleyen: ${res.addedBy}</p>
-                <small style="color:#999;">${new Date(res.createdAt).toLocaleString()}</small>
+                <div style="background:#f9f9f9; padding:5px; border-radius:3px; margin:5px 0;">
+                    <strong style="display:block; font-size:1.1rem; color:#2c3e50;">${quantity} ${unit}</strong>
+                    <small style="color:#7f8c8d;">Mevcut Stok</small>
+                </div>
+                <p style="margin:0; font-size:0.8rem;">Ekleyen: ${res.addedBy}</p>
+                <small style="color:#999; font-size:0.7rem;">${new Date(res.createdAt).toLocaleString()}</small>
         `;
 
-        // Yetkili ise Sil Butonu
+        // Yetkili ise Sil ve Güncelle Butonları
         if (currentUser.role !== 'kullanici') {
             popupContent += `
                 <hr style="margin:5px 0; border:0; border-top:1px solid #eee;">
+                <div style="display:flex; gap:5px; justify-content:center; margin-bottom:5px;">
+                    <button onclick="updateResourceStock('${res.id}', -1)" style="background:#e67e22; color:white; border:none; padding:2px 8px; border-radius:3px; cursor:pointer;">-</button>
+                    <button onclick="updateResourceStock('${res.id}', 1)" style="background:#27ae60; color:white; border:none; padding:2px 8px; border-radius:3px; cursor:pointer;">+</button>
+                    <button onclick="updateResourceStock('${res.id}', 10)" style="background:#27ae60; color:white; border:none; padding:2px 8px; border-radius:3px; cursor:pointer;">+10</button>
+                </div>
                 <button onclick="deleteResource('${res.id}')" style="background:#e74c3c; color:white; border:none; padding:4px 8px; border-radius:3px; cursor:pointer; width:100%; font-size:0.8rem;">
                     <i class="fas fa-trash"></i> Sil
                 </button>
@@ -830,6 +988,21 @@ window.deleteResource = function(id) {
             alert('Yardım noktası silindi.');
         } else {
             alert('Silme işlemi başarısız.');
+        }
+    }
+};
+
+// Global Stok Güncelleme
+window.updateResourceStock = function(id, change) {
+    const resource = DataManager.getResources().find(r => r.id === id);
+    if (resource) {
+        let currentQty = resource.quantity !== undefined ? resource.quantity : 0;
+        let newQty = currentQty + change;
+        if (newQty < 0) newQty = 0;
+        
+        if (DataManager.updateResource(id, { quantity: newQty })) {
+            loadMapData(); // Haritayı yenile (popup kapanabilir, bu yüzden kullanıcı tekrar tıklamalı veya açık kalmasını sağlamalıyız)
+            // Harita yenilenince popup kapanır. Kullanıcı deneyimi için popup'ı tekrar açmak iyi olur ama şimdilik basit tutalım.
         }
     }
 };
@@ -867,13 +1040,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Modal Dışına Tıklayınca Kapatma
-    window.onclick = function(event) {
-        const modal = document.getElementById('notesModal');
-        if (event.target == modal) {
-            modal.style.display = 'none';
-        }
-    };
 
     // Not Kaydetme
     const saveNoteBtn = document.getElementById('saveNoteBtn');

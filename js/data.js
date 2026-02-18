@@ -6,7 +6,8 @@ const STORAGE_KEYS = {
     CURRENT_USER: 'asadx_current_user',
     CONTAINERS: 'asadx_containers',
     RESOURCES: 'asadx_resources', // Yeni: Kaynak Noktaları
-    ANNOUNCEMENTS: 'asadx_announcements' // Yeni: Duyurular
+    ANNOUNCEMENTS: 'asadx_announcements', // Yeni: Duyurular
+    MISSING_PERSONS: 'asadx_missing_persons'
 };
 
 const DataManager = {
@@ -107,6 +108,17 @@ const DataManager = {
         return false;
     },
 
+    updateResource: function(id, updates) {
+        let resources = this.getResources();
+        const index = resources.findIndex(r => r.id === id);
+        if (index !== -1) {
+            resources[index] = { ...resources[index], ...updates };
+            localStorage.setItem(STORAGE_KEYS.RESOURCES, JSON.stringify(resources));
+            return true;
+        }
+        return false;
+    },
+
     // --- Duyurular (Yeni) ---
     getAnnouncements: function() {
         const announcements = localStorage.getItem(STORAGE_KEYS.ANNOUNCEMENTS);
@@ -127,6 +139,31 @@ const DataManager = {
         announcements = announcements.filter(a => a.id !== id);
         if (announcements.length !== initialLength) {
             localStorage.setItem(STORAGE_KEYS.ANNOUNCEMENTS, JSON.stringify(announcements));
+            return true;
+        }
+        return false;
+    },
+
+    // --- Kayıp İlanları (Yeni) ---
+    getMissingPersons: function() {
+        return JSON.parse(localStorage.getItem(STORAGE_KEYS.MISSING_PERSONS)) || [];
+    },
+
+    saveMissingPerson: function(person) {
+        const persons = this.getMissingPersons();
+        person.id = Date.now().toString(); // Basit ID
+        person.createdAt = new Date().toISOString();
+        persons.push(person);
+        localStorage.setItem(STORAGE_KEYS.MISSING_PERSONS, JSON.stringify(persons));
+        return true;
+    },
+
+    deleteMissingPerson: function(id) {
+        let persons = this.getMissingPersons();
+        const initialLength = persons.length;
+        persons = persons.filter(p => p.id !== id);
+        if (persons.length !== initialLength) {
+            localStorage.setItem(STORAGE_KEYS.MISSING_PERSONS, JSON.stringify(persons));
             return true;
         }
         return false;
@@ -194,6 +231,10 @@ const DataManager = {
 
         if (!localStorage.getItem(STORAGE_KEYS.RESOURCES)) {
             localStorage.setItem(STORAGE_KEYS.RESOURCES, JSON.stringify([]));
+        }
+
+        if (!localStorage.getItem(STORAGE_KEYS.MISSING_PERSONS)) {
+            localStorage.setItem(STORAGE_KEYS.MISSING_PERSONS, JSON.stringify([]));
         }
     }
 };

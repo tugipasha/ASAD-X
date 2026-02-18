@@ -38,6 +38,9 @@
                 <button id="showStatsBtn" class="btn-primary" style="width:100%; margin-bottom: 10px; background-color: #8e44ad;">
                     <i class="fas fa-chart-pie"></i> Durum İstatistikleri
                 </button>
+                <button id="openMissingPersonsBtn" class="btn-primary" style="width:100%; margin-bottom: 10px; background-color: #e67e22;">
+                    <i class="fas fa-user-friends"></i> Kayıp İlanları Panosu
+                </button>
                 
                 <div class="filter-controls" id="filterControls" style="display:none;">
                     <hr style="margin: 10px 0; border: 0; border-top: 1px solid #ddd;">
@@ -72,6 +75,10 @@
                         <option value="medical">Sahra Hastanesi</option>
                         <option value="tent">Çadır Kent</option>
                     </select>
+                    <div style="display:flex; gap:5px; margin-bottom:5px;">
+                        <input type="number" id="resourceQuantity" placeholder="Miktar" style="width:60%; padding:5px; border:1px solid #ddd; border-radius:3px;">
+                        <input type="text" id="resourceUnit" placeholder="Birim (Adet/Lt)" style="width:40%; padding:5px; border:1px solid #ddd; border-radius:3px;">
+                    </div>
                     <button id="addResourceBtn" class="btn-primary" style="width:100%; font-size: 0.9rem; background-color: #27ae60;" disabled>
                         <i class="fas fa-plus-circle"></i> Nokta Ekle
                     </button>
@@ -182,6 +189,34 @@
                 <button id="resolveEmergencyBtn" class="btn-primary" style="background-color: #27ae60; margin-top: 10px; display: none;">
                     <i class="fas fa-check"></i> Acil Durumu Çözüldü İşaretle
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Missing Persons Modal -->
+    <div id="missingPersonsModal" class="modal">
+        <div class="modal-content" style="max-width: 600px;">
+            <span class="close-missing-modal" style="color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer;">&times;</span>
+            <h2 style="color: #e67e22; border-bottom: 1px solid #eee; padding-bottom: 10px;"><i class="fas fa-user-friends"></i> Kayıp İlanları</h2>
+            
+            <div style="margin-top: 20px; background: #f9f9f9; padding: 15px; border-radius: 5px;">
+                <h4 style="margin-bottom: 10px;">Yeni İlan Oluştur</h4>
+                <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
+                    <input type="text" id="missingName" placeholder="Kayıp Kişinin Adı Soyadı" style="padding:8px; border:1px solid #ddd; border-radius:4px;">
+                    <input type="text" id="missingAge" placeholder="Yaş (Tahmini)" style="padding:8px; border:1px solid #ddd; border-radius:4px;">
+                    <input type="text" id="missingLocation" placeholder="En Son Görüldüğü Yer" style="padding:8px; border:1px solid #ddd; border-radius:4px;">
+                    <input type="text" id="missingContact" placeholder="İletişim Numarası" style="padding:8px; border:1px solid #ddd; border-radius:4px;">
+                </div>
+                <textarea id="missingDescription" placeholder="Fiziksel özellikler, kıyafet vb. detaylar..." style="width:100%; height:60px; margin-bottom:10px; padding:8px; border:1px solid #ddd; border-radius:4px; resize:vertical;"></textarea>
+                <button id="addMissingPersonBtn" class="btn-primary" style="width:100%; background-color: #e67e22;">İlan Yayınla</button>
+            </div>
+
+            <div style="margin-top: 20px;">
+                <h4 style="margin-bottom: 10px;">Güncel İlanlar</h4>
+                <div id="missingPersonsList" style="max-height: 400px; overflow-y: auto; border: 1px solid #eee; border-radius: 4px; padding: 10px;">
+                    <!-- İlanlar buraya -->
+                    <p style="text-align:center; color:#999;">Yükleniyor...</p>
+                </div>
             </div>
         </div>
     </div>
