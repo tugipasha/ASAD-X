@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
         listDiv.innerHTML = '';
 
         if (persons.length === 0) {
-            listDiv.innerHTML = '<p style="text-align:center; color:#999; padding:20px;">Henüz kayıp ilanı yok.</p>';
+            listDiv.innerHTML = '<p style="text-align:center; color:#999; padding:20px;">' + t('text_no_records') + '</p>';
             return;
         }
 
@@ -108,20 +108,20 @@ document.addEventListener('DOMContentLoaded', () => {
             if (currentUser.role !== 'kullanici' || currentUser.id === p.addedById) {
                 deleteBtn = `
                     <button onclick="deleteMissingPerson('${p.id}')" style="float:right; background:#e74c3c; color:white; border:none; padding:5px 10px; border-radius:3px; cursor:pointer; font-size:0.8rem;">
-                        <i class="fas fa-trash"></i> Kaldır
+                        <i class="fas fa-trash"></i> ` + t('btn_remove') + `
                     </button>
                 `;
             }
 
             div.innerHTML = `
                 ${deleteBtn}
-                <h4 style="margin:0; color:#c0392b;">${p.name} <small style="color:#666; font-weight:normal;">(${p.age || '?'} Yaş)</small></h4>
+                <h4 style="margin:0; color:#c0392b;">${p.name} <small style="color:#666; font-weight:normal;">(${p.age || '?'} ` + t('label_age') + `)</small></h4>
                 <small style="color:#999;">${new Date(p.createdAt).toLocaleDateString()}</small>
                 <div style="margin-top:5px; font-size:0.9rem;">
-                    <p style="margin:2px 0;"><strong>Son Konum:</strong> ${p.location || 'Bilinmiyor'}</p>
-                    <p style="margin:2px 0;"><strong>İletişim:</strong> ${p.contact}</p>
-                    <p style="margin:5px 0; color:#555; font-style:italic;">"${p.description || 'Açıklama yok.'}"</p>
-                    <p style="margin:0; font-size:0.8rem; color:#999; margin-top:5px;">İlan Sahibi: ${p.addedBy}</p>
+                    <p style="margin:2px 0;"><strong>` + t('label_last_seen') + `:</strong> ${p.location || t('text_unknown_location')}</p>
+                    <p style="margin:2px 0;"><strong>` + t('label_contact') + `:</strong> ${p.contact}</p>
+                    <p style="margin:5px 0; color:#555; font-style:italic;">"${p.description || t('text_no_desc')}"</p>
+                    <p style="margin:0; font-size:0.8rem; color:#999; margin-top:5px;">` + t('text_added_by') + ` ${p.addedBy}</p>
                 </div>
             `;
             listDiv.appendChild(div);
@@ -277,7 +277,7 @@ function loadAnnouncements() {
     const ticker = document.getElementById('announcementTicker');
     const tickerText = document.getElementById('tickerText');
     if (!ticker || !tickerText) return;
-
+    
     const announcements = DataManager.getAnnouncements();
     
     // Son 24 saatteki duyuruları al
@@ -292,12 +292,12 @@ function loadAnnouncements() {
         // Basitçe hepsini birleştirip gösterelim
         const textContent = recentAnnouncements.map(a => {
             let prefix = '';
-            if (a.type === 'danger') prefix = '⚠️ ACİL: ';
-            else if (a.type === 'warning') prefix = '⚠️ UYARI: ';
-            else prefix = '📢 DUYURU: ';
+            if (a.type === 'danger') prefix = '⚠️ ' + t('announcement_urgent') + ': ';
+            else if (a.type === 'warning') prefix = '⚠️ ' + t('announcement_warning') + ': ';
+            else prefix = '📢 ' + t('announcement_general') + ': ';
             
             // Geriye dönük uyumluluk ve undefined kontrolü
-            let message = 'İçerik yok';
+            let message = t('text_no_content');
             if (a.text && a.text !== 'undefined') {
                 message = a.text;
             } else if (a.title || a.content) {
@@ -434,30 +434,30 @@ function openStatsModal() {
             <div style="display:grid; grid-template-columns: 1fr 1fr; gap:20px; margin-top:20px;">
                 <div style="background:#f8f9fa; padding:15px; border-radius:8px; text-align:center;">
                     <h3 style="color:#2c3e50; font-size:2rem; margin:0;">${totalUsers}</h3>
-                    <p style="color:#7f8c8d; margin:0;">Toplam Kullanıcı</p>
+                    <p style="color:#7f8c8d; margin:0;">` + t('text_total_users') + `</p>
                 </div>
                 <div style="background:#ffebee; padding:15px; border-radius:8px; text-align:center;">
                     <h3 style="color:#e74c3c; font-size:2rem; margin:0;">${emergencyCount}</h3>
-                    <p style="color:#c0392b; margin:0;">Acil Durum</p>
+                    <p style="color:#c0392b; margin:0;">` + t('text_emergency_users') + `</p>
                 </div>
             </div>
     
-            <h4 style="margin-top:20px; border-bottom:1px solid #eee; padding-bottom:5px;">Kaynak Dağılımı</h4>
+            <h4 style="margin-top:20px; border-bottom:1px solid #eee; padding-bottom:5px;">` + t('text_resource_dist') + `</h4>
             <div style="margin-top:10px;">
                 <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                    <span><i class="fas fa-faucet" style="color:#3498db"></i> Su</span>
+                    <span><i class="fas fa-faucet" style="color:#3498db"></i> ` + t('resource_water') + `</span>
                     <strong>${resourceCounts.water}</strong>
                 </div>
                 <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                    <span><i class="fas fa-utensils" style="color:#e67e22"></i> Gıda</span>
+                    <span><i class="fas fa-utensils" style="color:#e67e22"></i> ` + t('resource_food') + `</span>
                     <strong>${resourceCounts.food}</strong>
                 </div>
                 <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                    <span><i class="fas fa-clinic-medical" style="color:#e74c3c"></i> Sağlık</span>
+                    <span><i class="fas fa-clinic-medical" style="color:#e74c3c"></i> ` + t('resource_medical') + `</span>
                     <strong>${resourceCounts.medical}</strong>
                 </div>
                 <div style="display:flex; justify-content:space-between; margin-bottom:5px;">
-                    <span><i class="fas fa-campground" style="color:#27ae60"></i> Çadır</span>
+                    <span><i class="fas fa-campground" style="color:#27ae60"></i> ` + t('resource_tent') + `</span>
                     <strong>${resourceCounts.tent}</strong>
                 </div>
             </div>
@@ -469,10 +469,10 @@ function openStatsModal() {
 
 function getRoleName(role) {
     switch(role) {
-        case 'doktor': return 'Doktor';
-        case 'guvenlik': return 'Güvenlik';
-        case 'kullanici': return 'Afetzede';
-        default: return 'Kullanıcı';
+        case 'doktor': return t('role_doctor_name');
+        case 'guvenlik': return t('role_security_name');
+        case 'kullanici': return t('role_victim_name');
+        default: return t('role_user_name');
     }
 }
 
@@ -823,7 +823,6 @@ function loadMapData(filter = 'all') {
     }
 }
 
-// --- SON AKTİVİTELER (YENİ) ---
 function loadRecentActivity() {
     const activityList = document.getElementById('activityList');
     if (!activityList) return;
@@ -838,7 +837,7 @@ function loadRecentActivity() {
         if (user.isEmergency && user.emergencyTime) {
             activities.push({
                 type: 'emergency',
-                text: `<strong>${user.name}</strong> acil yardım çağrısı yaptı!`,
+                text: t('text_emergency_call', {name: user.name}),
                 time: new Date(user.emergencyTime),
                 icon: 'fa-exclamation-triangle',
                 color: '#e74c3c'
@@ -850,7 +849,7 @@ function loadRecentActivity() {
             user.notes.forEach(note => {
                 activities.push({
                     type: 'note',
-                    text: `<strong>${user.name}</strong> için not eklendi: "${note.content.substring(0, 20)}..."`,
+                    text: t('text_note_added_log', {name: user.name, note: note.content.substring(0, 20)}),
                     time: new Date(note.date),
                     icon: 'fa-sticky-note',
                     color: '#3498db'
@@ -863,7 +862,7 @@ function loadRecentActivity() {
     resources.forEach(res => {
         activities.push({
             type: 'resource',
-            text: `Yeni <strong>${getResourceName(res.type)}</strong> eklendi.`,
+            text: t('text_new_resource_added', {type: getResourceName(res.type)}),
             time: new Date(res.createdAt),
             icon: 'fa-plus-circle',
             color: '#27ae60'
@@ -895,7 +894,7 @@ function loadRecentActivity() {
     });
 
     if (activities.length === 0) {
-        activityList.innerHTML = '<p style="color:#999; text-align:center;">Henüz aktivite yok.</p>';
+        activityList.innerHTML = '<p style="color:#999; text-align:center;">' + t('text_no_activity') + '</p>';
     }
 }
 
@@ -1009,11 +1008,11 @@ window.updateResourceStock = function(id, change) {
 
 function getResourceName(type) {
     switch(type) {
-        case 'water': return 'Su Dağıtım Noktası';
-        case 'food': return 'Yemek Dağıtım Noktası';
-        case 'medical': return 'Sahra Hastanesi';
-        case 'tent': return 'Çadır Kent';
-        default: return 'Yardım Noktası';
+        case 'water': return t('resource_type_water');
+        case 'food': return t('resource_type_food');
+        case 'medical': return t('resource_type_medical');
+        case 'tent': return t('resource_type_tent');
+        default: return t('resource_label').replace(':', '');
     }
 }
 

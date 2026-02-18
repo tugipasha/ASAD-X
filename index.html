@@ -12,47 +12,47 @@
     <div class="login-container">
         <div class="login-header">
             <h1>ASAD-X</h1>
-            <p>Afet Sonrası Acil Destek ve Haritalama Sistemi</p>
+            <p data-i18n="header_subtitle">Afet Sonrası Acil Destek ve Haritalama Sistemi</p>
         </div>
         
         <div class="form-wrapper">
             <!-- Giriş Formu -->
             <form id="loginForm" class="active-form">
-                <h2>Giriş Yap</h2>
+                <h2 data-i18n="login_header">Giriş Yap</h2>
                 <div class="input-group">
                     <i class="fas fa-user"></i>
-                    <input type="text" id="loginUsername" placeholder="Kullanıcı Adı" required>
+                    <input type="text" id="loginUsername" placeholder="Kullanıcı Adı" data-i18n-placeholder="login_username" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" id="loginPassword" placeholder="Şifre" required>
+                    <input type="password" id="loginPassword" placeholder="Şifre" data-i18n-placeholder="login_password" required>
                 </div>
-                <button type="submit" class="btn-primary">Giriş Yap</button>
-                <p class="switch-form">Hesabın yok mu? <a href="#" id="showRegister">Kayıt Ol</a></p>
+                <button type="submit" class="btn-primary" data-i18n="login_btn">Giriş Yap</button>
+                <p class="switch-form"><span data-i18n="no_account">Hesabın yok mu?</span> <a href="#" id="showRegister" data-i18n="register_link">Kayıt Ol</a></p>
             </form>
 
             <!-- Kayıt Formu -->
             <form id="registerForm" class="hidden-form">
-                <h2>Kayıt Ol</h2>
+                <h2 data-i18n="register_header">Kayıt Ol</h2>
                 <div class="input-group">
                     <i class="fas fa-user"></i>
-                    <input type="text" id="regUsername" placeholder="Kullanıcı Adı" required>
+                    <input type="text" id="regUsername" placeholder="Kullanıcı Adı" data-i18n-placeholder="register_username" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-id-card"></i>
-                    <input type="text" id="regName" placeholder="Ad Soyad" required>
+                    <input type="text" id="regName" placeholder="Ad Soyad" data-i18n-placeholder="register_name" required>
                 </div>
                 <div class="input-group">
                     <i class="fas fa-lock"></i>
-                    <input type="password" id="regPassword" placeholder="Şifre" required>
+                    <input type="password" id="regPassword" placeholder="Şifre" data-i18n-placeholder="register_password" required>
                 </div>
                 
                 <div class="input-group">
                     <i class="fas fa-user-tag"></i>
                     <select id="regRole" required>
-                        <option value="kullanici">Kullanıcı (Afetzede)</option>
-                        <option value="doktor">Doktor</option>
-                        <option value="guvenlik">Güvenlik Görevlisi</option>
+                        <option value="kullanici" data-i18n="role_user">Kullanıcı (Afetzede)</option>
+                        <option value="doktor" data-i18n="role_doctor">Doktor</option>
+                        <option value="guvenlik" data-i18n="role_security">Güvenlik Görevlisi</option>
                     </select>
                 </div>
 
@@ -60,21 +60,22 @@
                 <div id="userFields" class="conditional-fields">
                     <div class="input-group">
                         <i class="fas fa-wheelchair"></i>
-                        <input type="text" id="regDisability" placeholder="Engel Durumu (Varsa)">
+                        <input type="text" id="regDisability" placeholder="Engel Durumu (Varsa)" data-i18n-placeholder="disability_placeholder">
                     </div>
                     <div class="input-group">
                         <i class="fas fa-hand-holding-medical"></i>
-                        <input type="text" id="regNeeds" placeholder="Acil İhtiyaçlar">
+                        <input type="text" id="regNeeds" placeholder="Acil İhtiyaçlar" data-i18n-placeholder="needs_placeholder">
                     </div>
                 </div>
 
-                <button type="submit" class="btn-primary">Kayıt Ol</button>
-                <p class="switch-form">Zaten hesabın var mı? <a href="#" id="showLogin">Giriş Yap</a></p>
+                <button type="submit" class="btn-primary" data-i18n="register_btn">Kayıt Ol</button>
+                <p class="switch-form"><span data-i18n="have_account">Zaten hesabın var mı?</span> <a href="#" id="showLogin" data-i18n="login_link">Giriş Yap</a></p>
             </form>
         </div>
     </div>
 
     <script src="js/data.js"></script>
+    <script src="js/lang.js"></script>
     <script src="js/auth.js"></script>
 </body>
 </html>

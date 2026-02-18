@@ -17,14 +17,14 @@
             <span id="userRoleDisplay" class="badge">Rol</span>
         </div>
         <ul>
-            <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Çıkış</a></li>
+            <li><a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> <span data-i18n="logout">Çıkış</span></a></li>
         </ul>
     </nav>
 
     <!-- Duyuru Bandı (Ticker) - Layout dışına alındı -->
     <div id="announcementTicker" class="announcement-ticker" style="display:none;">
         <div class="ticker-content">
-            <span id="tickerText">Duyurular yükleniyor...</span>
+            <span id="tickerText" data-i18n="loading_announcements">Duyurular yükleniyor...</span>
         </div>
         <button id="closeTickerBtn" style="background:none; border:none; color:white; cursor:pointer; font-weight:bold;">&times;</button>
     </div>
@@ -33,80 +33,80 @@
         <!-- Sol Panel: Listeler ve Filtreler -->
         <div class="sidebar" id="sidebar">
             <div id="sidebarHeader">
-                <h3>Konteynerlar / Kişiler</h3>
+                <h3 data-i18n="sidebar_header">Konteynerlar / Kişiler</h3>
                 <!-- İstatistik Butonu (Herkes için görünür) -->
                 <button id="showStatsBtn" class="btn-primary" style="width:100%; margin-bottom: 10px; background-color: #8e44ad;">
-                    <i class="fas fa-chart-pie"></i> Durum İstatistikleri
+                    <i class="fas fa-chart-pie"></i> <span data-i18n="stats_btn">Durum İstatistikleri</span>
                 </button>
                 <button id="openMissingPersonsBtn" class="btn-primary" style="width:100%; margin-bottom: 10px; background-color: #e67e22;">
-                    <i class="fas fa-user-friends"></i> Kayıp İlanları Panosu
+                    <i class="fas fa-user-friends"></i> <span data-i18n="missing_btn">Kayıp İlanları Panosu</span>
                 </button>
                 
                 <div class="filter-controls" id="filterControls" style="display:none;">
                     <hr style="margin: 10px 0; border: 0; border-top: 1px solid #ddd;">
 
-                    <label style="font-size: 0.9rem; font-weight: bold; display: block; margin-bottom: 5px;">Filtrele:</label>
+                    <label style="font-size: 0.9rem; font-weight: bold; display: block; margin-bottom: 5px;" data-i18n="filter_label">Filtrele:</label>
                     <select id="filterNeeds">
-                        <option value="all">Tümü</option>
-                        <option value="emergency">Sadece Acil Durumlar</option>
-                        <option value="medical">İlaç/Tıbbi İhtiyaç</option>
-                        <option value="food">Gıda/Su İhtiyacı</option>
-                        <option value="heating">Isınma İhtiyacı</option>
-                        <option value="baby">Bebek İhtiyacı</option>
+                        <option value="all" data-i18n="filter_all">Tümü</option>
+                        <option value="emergency" data-i18n="filter_emergency">Sadece Acil Durumlar</option>
+                        <option value="medical" data-i18n="filter_medical">İlaç/Tıbbi İhtiyaç</option>
+                        <option value="food" data-i18n="filter_food">Gıda/Su İhtiyacı</option>
+                        <option value="heating" data-i18n="filter_heating">Isınma İhtiyacı</option>
+                        <option value="baby" data-i18n="filter_baby">Bebek İhtiyacı</option>
                     </select>
 
                     <div style="margin-top: 10px; border: 1px solid #eee; padding: 5px; border-radius: 4px;">
-                        <label style="font-size: 0.8rem; font-weight: bold; display: block; margin-bottom: 5px;">Kaynak Noktaları:</label>
+                        <label style="font-size: 0.8rem; font-weight: bold; display: block; margin-bottom: 5px;" data-i18n="resource_label">Kaynak Noktaları:</label>
                         <div style="display: flex; flex-wrap: wrap; gap: 5px;">
-                            <label style="font-size: 0.8rem;"><input type="checkbox" class="resource-filter" value="water" checked> Su</label>
-                            <label style="font-size: 0.8rem;"><input type="checkbox" class="resource-filter" value="food" checked> Yemek</label>
-                            <label style="font-size: 0.8rem;"><input type="checkbox" class="resource-filter" value="medical" checked> Sağlık</label>
-                            <label style="font-size: 0.8rem;"><input type="checkbox" class="resource-filter" value="tent" checked> Çadır</label>
+                            <label style="font-size: 0.8rem;"><input type="checkbox" class="resource-filter" value="water" checked> <span data-i18n="resource_water">Su</span></label>
+                            <label style="font-size: 0.8rem;"><input type="checkbox" class="resource-filter" value="food" checked> <span data-i18n="resource_food">Yemek</span></label>
+                            <label style="font-size: 0.8rem;"><input type="checkbox" class="resource-filter" value="medical" checked> <span data-i18n="resource_medical">Sağlık</span></label>
+                            <label style="font-size: 0.8rem;"><input type="checkbox" class="resource-filter" value="tent" checked> <span data-i18n="resource_tent">Çadır</span></label>
                         </div>
                     </div>
 
                     <hr style="margin: 15px 0; border: 0; border-top: 1px solid #ddd;">
                     
-                    <label style="font-size: 0.9rem; font-weight: bold; display: block; margin-bottom: 5px;">Yardım Noktası Ekle:</label>
-                    <p style="font-size: 0.8rem; color: #666;">Haritaya tıklayıp konum seçin, sonra ekleyin.</p>
+                    <label style="font-size: 0.9rem; font-weight: bold; display: block; margin-bottom: 5px;" data-i18n="add_resource_label">Yardım Noktası Ekle:</label>
+                    <p style="font-size: 0.8rem; color: #666;" data-i18n="add_resource_desc">Haritaya tıklayıp konum seçin, sonra ekleyin.</p>
                     <select id="resourceType" style="margin-bottom: 5px;">
-                        <option value="water">Su Dağıtım</option>
-                        <option value="food">Yemek Dağıtım</option>
-                        <option value="medical">Sahra Hastanesi</option>
-                        <option value="tent">Çadır Kent</option>
+                        <option value="water" data-i18n="resource_type_water">Su Dağıtım</option>
+                        <option value="food" data-i18n="resource_type_food">Yemek Dağıtım</option>
+                        <option value="medical" data-i18n="resource_type_medical">Sahra Hastanesi</option>
+                        <option value="tent" data-i18n="resource_type_tent">Çadır Kent</option>
                     </select>
                     <div style="display:flex; gap:5px; margin-bottom:5px;">
-                        <input type="number" id="resourceQuantity" placeholder="Miktar" style="width:60%; padding:5px; border:1px solid #ddd; border-radius:3px;">
-                        <input type="text" id="resourceUnit" placeholder="Birim (Adet/Lt)" style="width:40%; padding:5px; border:1px solid #ddd; border-radius:3px;">
+                        <input type="number" id="resourceQuantity" placeholder="Miktar" data-i18n-placeholder="resource_qty_placeholder" style="width:60%; padding:5px; border:1px solid #ddd; border-radius:3px;">
+                        <input type="text" id="resourceUnit" placeholder="Birim (Adet/Lt)" data-i18n-placeholder="resource_unit_placeholder" style="width:40%; padding:5px; border:1px solid #ddd; border-radius:3px;">
                     </div>
                     <button id="addResourceBtn" class="btn-primary" style="width:100%; font-size: 0.9rem; background-color: #27ae60;" disabled>
-                        <i class="fas fa-plus-circle"></i> Nokta Ekle
+                        <i class="fas fa-plus-circle"></i> <span data-i18n="add_resource_btn">Nokta Ekle</span>
                     </button>
 
                     <hr style="margin: 15px 0; border: 0; border-top: 1px solid #ddd;">
 
-                    <label style="font-size: 0.9rem; font-weight: bold; display: block; margin-bottom: 5px;">Duyuru Yayınla:</label>
-                    <input type="text" id="announcementTitle" placeholder="Başlık" style="width:100%; margin-bottom:5px; padding:5px; border:1px solid #ddd; border-radius:3px;">
-                    <textarea id="announcementContent" placeholder="Mesajınız..." style="width:100%; height:50px; margin-bottom:5px; padding:5px; border:1px solid #ddd; border-radius:3px; resize:vertical;"></textarea>
+                    <label style="font-size: 0.9rem; font-weight: bold; display: block; margin-bottom: 5px;" data-i18n="announcement_label">Duyuru Yayınla:</label>
+                    <input type="text" id="announcementTitle" placeholder="Başlık" data-i18n-placeholder="announcement_title_placeholder" style="width:100%; margin-bottom:5px; padding:5px; border:1px solid #ddd; border-radius:3px;">
+                    <textarea id="announcementContent" placeholder="Mesajınız..." data-i18n-placeholder="announcement_content_placeholder" style="width:100%; height:50px; margin-bottom:5px; padding:5px; border:1px solid #ddd; border-radius:3px; resize:vertical;"></textarea>
                     <select id="announcementType" style="width:100%; margin-bottom:5px; padding:5px;">
-                        <option value="info">Bilgilendirme (Mavi)</option>
-                        <option value="warning">Uyarı (Sarı)</option>
-                        <option value="danger">Acil Durum (Kırmızı)</option>
+                        <option value="info" data-i18n="announcement_type_info">Bilgilendirme (Mavi)</option>
+                        <option value="warning" data-i18n="announcement_type_warning">Uyarı (Sarı)</option>
+                        <option value="danger" data-i18n="announcement_type_danger">Acil Durum (Kırmızı)</option>
                     </select>
                     <button id="addAnnouncementBtn" class="btn-primary" style="width:100%; font-size: 0.9rem; background-color: #e67e22;">
-                        <i class="fas fa-bullhorn"></i> Yayınla
+                        <i class="fas fa-bullhorn"></i> <span data-i18n="publish_btn">Yayınla</span>
                     </button>
                 </div>
             </div>
             
             <div id="listContainer" class="list-container">
                 <!-- Dinamik liste buraya gelecek -->
-                <p style="text-align:center; color:#999; margin-top:20px;">Yükleniyor...</p>
+                <p style="text-align:center; color:#999; margin-top:20px;" data-i18n="loading">Yükleniyor...</p>
             </div>
 
             <!-- Son Aktiviteler (Log) -->
             <div id="activityLog" style="border-top: 1px solid #ddd; padding-top: 10px; margin-top: 10px; max-height: 150px; overflow-y: auto;">
-                <h4 style="font-size: 0.9rem; color: #7f8c8d; margin-bottom: 5px;">Son Aktiviteler</h4>
+                <h4 style="font-size: 0.9rem; color: #7f8c8d; margin-bottom: 5px;" data-i18n="recent_activity">Son Aktiviteler</h4>
                 <div id="activityList" style="font-size: 0.8rem;">
                     <!-- Loglar buraya -->
                 </div>
@@ -114,49 +114,49 @@
 
             <!-- Kullanıcı için Konteyner Ekleme Alanı -->
             <div id="userActions" style="display:none; margin-top: 20px; border-top: 1px solid #ddd; padding-top: 10px;">
-                <h4>Konum Bildir</h4>
-                <p style="font-size: 0.8rem; color: #666;">Haritaya tıklayarak veya GPS ile konumunuzu belirleyin.</p>
-                <button id="findMeBtn" class="btn-primary" style="width:100%; margin-top:10px; background-color: #3498db;"><i class="fas fa-location-crosshairs"></i> Konumumu Bul</button>
-                <button id="saveLocationBtn" class="btn-primary" style="width:100%; margin-top:10px;" disabled>Konumu Kaydet</button>
+                <h4 data-i18n="report_location">Konum Bildir</h4>
+                <p style="font-size: 0.8rem; color: #666;" data-i18n="report_location_desc">Haritaya tıklayarak veya GPS ile konumunuzu belirleyin.</p>
+                <button id="findMeBtn" class="btn-primary" style="width:100%; margin-top:10px; background-color: #3498db;"><i class="fas fa-location-crosshairs"></i> <span data-i18n="find_me_btn">Konumumu Bul</span></button>
+                <button id="saveLocationBtn" class="btn-primary" style="width:100%; margin-top:10px;" disabled data-i18n="save_location_btn">Konumu Kaydet</button>
                 
                 <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
 
-                <h4>Akıllı Rota (En Yakın)</h4>
-                <p style="font-size: 0.8rem; color: #666;">Size en yakın yardım noktasını bulup rota çizer.</p>
+                <h4 data-i18n="smart_route">Akıllı Rota (En Yakın)</h4>
+                <p style="font-size: 0.8rem; color: #666;" data-i18n="smart_route_desc">Size en yakın yardım noktasını bulup rota çizer.</p>
                 <div style="display:flex; gap:5px; flex-wrap:wrap; margin-top:10px;">
-                    <button class="btn-smart-route" data-type="water" style="flex:1; background:#3498db; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer;"><i class="fas fa-faucet"></i> Su</button>
-                    <button class="btn-smart-route" data-type="food" style="flex:1; background:#e67e22; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer;"><i class="fas fa-utensils"></i> Yemek</button>
-                    <button class="btn-smart-route" data-type="medical" style="flex:1; background:#e74c3c; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer;"><i class="fas fa-clinic-medical"></i> Sağlık</button>
+                    <button class="btn-smart-route" data-type="water" style="flex:1; background:#3498db; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer;"><i class="fas fa-faucet"></i> <span data-i18n="need_water">Su</span></button>
+                    <button class="btn-smart-route" data-type="food" style="flex:1; background:#e67e22; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer;"><i class="fas fa-utensils"></i> <span data-i18n="need_food">Yemek</span></button>
+                    <button class="btn-smart-route" data-type="medical" style="flex:1; background:#e74c3c; color:white; border:none; padding:8px; border-radius:4px; cursor:pointer;"><i class="fas fa-clinic-medical"></i> <span data-i18n="need_medicine">Sağlık</span></button>
                 </div>
                 <div id="routeInfo" style="margin-top:10px; font-size:0.9rem; color:#2c3e50; font-weight:bold;"></div>
 
                 <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
 
-                <h4>Durum ve İhtiyaç Bildir</h4>
-                <p style="font-size: 0.8rem; color: #666;">İhtiyaçlarınızı seçin ve barınma detaylarını girin.</p>
+                <h4 data-i18n="report_status">Durum ve İhtiyaç Bildir</h4>
+                <p style="font-size: 0.8rem; color: #666;" data-i18n="report_status_desc">İhtiyaçlarınızı seçin ve barınma detaylarını girin.</p>
                 
                 <div class="needs-form" style="margin-top: 10px;">
-                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="need" value="Su"> Su</label>
-                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="need" value="Gıda"> Gıda</label>
-                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="need" value="Isınma"> Isınma (Battaniye/Isıtıcı)</label>
-                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="need" value="İlaç"> İlaç / Tıbbi Malzeme</label>
-                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="need" value="Bebek"> Bebek Ürünü (Mama/Bez)</label>
-                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="need" value="Kıyafet"> Kıyafet</label>
+                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="need" value="Su"> <span data-i18n="need_water">Su</span></label>
+                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="need" value="Gıda"> <span data-i18n="need_food">Gıda</span></label>
+                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="need" value="Isınma"> <span data-i18n="need_heating">Isınma (Battaniye/Isıtıcı)</span></label>
+                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="need" value="İlaç"> <span data-i18n="need_medicine">İlaç / Tıbbi Malzeme</span></label>
+                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="need" value="Bebek"> <span data-i18n="need_baby">Bebek Ürünü (Mama/Bez)</span></label>
+                    <label style="display:block; margin-bottom:5px;"><input type="checkbox" name="need" value="Kıyafet"> <span data-i18n="need_clothes">Kıyafet</span></label>
                 </div>
 
                 <div class="input-group" style="margin-top: 10px;">
                     <i class="fas fa-home"></i>
-                    <input type="text" id="shelterInfo" placeholder="Barınma Detayı (Örn: Konteyner A-12, Çadır 5)">
+                    <input type="text" id="shelterInfo" placeholder="Barınma Detayı (Örn: Konteyner A-12, Çadır 5)" data-i18n-placeholder="shelter_placeholder">
                 </div>
 
-                <button id="updateStatusBtn" class="btn-primary" style="width:100%; margin-top:10px; background-color: #f39c12;">Bilgileri Güncelle</button>
+                <button id="updateStatusBtn" class="btn-primary" style="width:100%; margin-top:10px; background-color: #f39c12;" data-i18n="update_info_btn">Bilgileri Güncelle</button>
                 
                 <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
                 
-                <h4>Acil Durum</h4>
-                <p style="font-size: 0.8rem; color: #666;">Hayati tehlike veya acil tıbbi yardım durumunda bu butona basın.</p>
+                <h4 data-i18n="emergency_header">Acil Durum</h4>
+                <p style="font-size: 0.8rem; color: #666;" data-i18n="emergency_desc">Hayati tehlike veya acil tıbbi yardım durumunda bu butona basın.</p>
                 <button id="emergencyBtn" class="btn-primary" style="background-color: #c0392b; width:100%; margin-top:10px; padding: 15px; font-size: 1.1rem;">
-                    <i class="fas fa-exclamation-triangle"></i> ACİL YARDIM ÇAĞRISI
+                    <i class="fas fa-exclamation-triangle"></i> <span data-i18n="emergency_btn">ACİL YARDIM ÇAĞRISI</span>
                 </button>
             </div>
         </div>
@@ -172,6 +172,7 @@
     
     <!-- App Scripts -->
     <script src="js/data.js"></script>
+    <script src="js/lang.js"></script>
     <script src="js/map.js"></script>
     <script src="js/app.js"></script>
 
@@ -179,15 +180,15 @@
     <div id="notesModal" class="modal">
         <div class="modal-content">
             <span class="close-modal">&times;</span>
-            <h3 id="modalUserName">Kullanıcı Adı</h3>
+            <h3 id="modalUserName" data-i18n="notes_user_name">Kullanıcı Adı</h3>
             <div id="modalNotesList" class="notes-list">
                 <!-- Notlar buraya gelecek -->
             </div>
             <div class="add-note-form">
-                <textarea id="newNoteText" placeholder="Notunuzu buraya yazın..."></textarea>
-                <button id="saveNoteBtn" class="btn-primary">Not Ekle</button>
+                <textarea id="newNoteText" placeholder="Notunuzu buraya yazın..." data-i18n-placeholder="notes_placeholder"></textarea>
+                <button id="saveNoteBtn" class="btn-primary" data-i18n="add_note_btn">Not Ekle</button>
                 <button id="resolveEmergencyBtn" class="btn-primary" style="background-color: #27ae60; margin-top: 10px; display: none;">
-                    <i class="fas fa-check"></i> Acil Durumu Çözüldü İşaretle
+                    <i class="fas fa-check"></i> <span data-i18n="resolve_emergency_btn">Acil Durumu Çözüldü İşaretle</span>
                 </button>
             </div>
         </div>
@@ -197,25 +198,25 @@
     <div id="missingPersonsModal" class="modal">
         <div class="modal-content" style="max-width: 600px;">
             <span class="close-missing-modal" style="color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer;">&times;</span>
-            <h2 style="color: #e67e22; border-bottom: 1px solid #eee; padding-bottom: 10px;"><i class="fas fa-user-friends"></i> Kayıp İlanları</h2>
+            <h2 style="color: #e67e22; border-bottom: 1px solid #eee; padding-bottom: 10px;"><i class="fas fa-user-friends"></i> <span data-i18n="missing_persons_header">Kayıp İlanları</span></h2>
             
             <div style="margin-top: 20px; background: #f9f9f9; padding: 15px; border-radius: 5px;">
-                <h4 style="margin-bottom: 10px;">Yeni İlan Oluştur</h4>
+                <h4 style="margin-bottom: 10px;" data-i18n="create_missing_report">Yeni İlan Oluştur</h4>
                 <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px; margin-bottom:10px;">
-                    <input type="text" id="missingName" placeholder="Kayıp Kişinin Adı Soyadı" style="padding:8px; border:1px solid #ddd; border-radius:4px;">
-                    <input type="text" id="missingAge" placeholder="Yaş (Tahmini)" style="padding:8px; border:1px solid #ddd; border-radius:4px;">
-                    <input type="text" id="missingLocation" placeholder="En Son Görüldüğü Yer" style="padding:8px; border:1px solid #ddd; border-radius:4px;">
-                    <input type="text" id="missingContact" placeholder="İletişim Numarası" style="padding:8px; border:1px solid #ddd; border-radius:4px;">
+                    <input type="text" id="missingName" placeholder="Kayıp Kişinin Adı Soyadı" data-i18n-placeholder="missing_name_placeholder" style="padding:8px; border:1px solid #ddd; border-radius:4px;">
+                    <input type="text" id="missingAge" placeholder="Yaş (Tahmini)" data-i18n-placeholder="missing_age_placeholder" style="padding:8px; border:1px solid #ddd; border-radius:4px;">
+                    <input type="text" id="missingLocation" placeholder="En Son Görüldüğü Yer" data-i18n-placeholder="missing_location_placeholder" style="padding:8px; border:1px solid #ddd; border-radius:4px;">
+                    <input type="text" id="missingContact" placeholder="İletişim Numarası" data-i18n-placeholder="missing_contact_placeholder" style="padding:8px; border:1px solid #ddd; border-radius:4px;">
                 </div>
-                <textarea id="missingDescription" placeholder="Fiziksel özellikler, kıyafet vb. detaylar..." style="width:100%; height:60px; margin-bottom:10px; padding:8px; border:1px solid #ddd; border-radius:4px; resize:vertical;"></textarea>
-                <button id="addMissingPersonBtn" class="btn-primary" style="width:100%; background-color: #e67e22;">İlan Yayınla</button>
+                <textarea id="missingDescription" placeholder="Fiziksel özellikler, kıyafet vb. detaylar..." data-i18n-placeholder="missing_desc_placeholder" style="width:100%; height:60px; margin-bottom:10px; padding:8px; border:1px solid #ddd; border-radius:4px; resize:vertical;"></textarea>
+                <button id="addMissingPersonBtn" class="btn-primary" style="width:100%; background-color: #e67e22;" data-i18n="publish_missing_btn">İlan Yayınla</button>
             </div>
 
             <div style="margin-top: 20px;">
-                <h4 style="margin-bottom: 10px;">Güncel İlanlar</h4>
+                <h4 style="margin-bottom: 10px;" data-i18n="current_missing_reports">Güncel İlanlar</h4>
                 <div id="missingPersonsList" style="max-height: 400px; overflow-y: auto; border: 1px solid #eee; border-radius: 4px; padding: 10px;">
                     <!-- İlanlar buraya -->
-                    <p style="text-align:center; color:#999;">Yükleniyor...</p>
+                    <p style="text-align:center; color:#999;" data-i18n="loading">Yükleniyor...</p>
                 </div>
             </div>
         </div>
@@ -225,7 +226,7 @@
     <div id="statsModal" class="modal">
         <div class="modal-content" style="max-width: 600px;">
             <span class="close-stats-modal">&times;</span>
-            <h3><i class="fas fa-chart-bar"></i> Afet Durum Paneli</h3>
+            <h3><i class="fas fa-chart-bar"></i> <span data-i18n="stats_header">Afet Durum Paneli</span></h3>
             <div id="statsContent" style="margin-top:20px;">
                 <!-- İstatistikler Buraya -->
             </div>
