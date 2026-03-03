@@ -74,6 +74,10 @@
                         <option value="food" data-i18n="resource_type_food">Yemek Dağıtım</option>
                         <option value="medical" data-i18n="resource_type_medical">Sahra Hastanesi</option>
                         <option value="tent" data-i18n="resource_type_tent">Çadır Kent</option>
+                        <option value="fire" data-i18n="resource_type_fire">İtfaiye İstasyonu</option>
+                        <option value="security" data-i18n="resource_type_security">Güvenlik Noktası</option>
+                        <option value="paramedic" data-i18n="resource_type_paramedic">Sağlık Görevlisi</option>
+                        <option value="pharmacy" data-i18n="resource_type_pharmacy">Eczane</option>
                     </select>
                     <div style="display:flex; gap:5px; margin-bottom:5px;">
                         <input type="number" id="resourceQuantity" placeholder="Miktar" data-i18n-placeholder="resource_qty_placeholder" style="width:60%; padding:5px; border:1px solid #ddd; border-radius:3px;">
@@ -149,10 +153,27 @@
                     <input type="text" id="shelterInfo" placeholder="Barınma Detayı (Örn: Konteyner A-12, Çadır 5)" data-i18n-placeholder="shelter_placeholder">
                 </div>
 
-                <button id="updateStatusBtn" class="btn-primary" style="width:100%; margin-top:10px; background-color: #f39c12;" data-i18n="update_info_btn">Bilgileri Güncelle</button>
+                <div class="input-group" style="margin-top: 10px;">
+                    <i class="fas fa-users"></i>
+                    <input type="number" id="occupancyCount" placeholder="Kişi Sayısı" data-i18n-placeholder="occupancy_placeholder" min="1">
+                </div>
+
+                <button id="updateStatusBtn" class="btn-primary" style="width:100%; margin-top:10px;" data-i18n="update_info_btn">Bilgileri Güncelle</button>
                 
                 <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
+
+                <h4 data-i18n="ai_advisor_title">Yapay Zeka Danışmanı</h4>
+                <p style="font-size: 0.8rem; color: #666;" data-i18n="ai_advisor_desc">Psikolojik durum ve beslenme takibi için danışmanınız.</p>
+                <button id="openAiChatBtn" class="btn-primary" style="width:100%; margin-top:10px; background-color: #9b59b6;"><i class="fas fa-robot"></i> <span data-i18n="open_ai_chat">Danışmana Bağlan</span></button>
                 
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
+
+                <h4 data-i18n="breathing_exercise_title">Nefes Egzersizi</h4>
+                <p style="font-size: 0.8rem; color: #666;" data-i18n="breathing_exercise_desc">Sakinleşmek ve stres yönetimi için egzersiz yapın.</p>
+                <button id="startBreathingBtn" class="btn-primary" style="width:100%; margin-top:10px; background-color: #2980b9;"><i class="fas fa-wind"></i> <span data-i18n="start_breathing">Egzersizi Başlat</span></button>
+
+                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #ddd;">
+
                 <h4 data-i18n="emergency_header">Acil Durum</h4>
                 <p style="font-size: 0.8rem; color: #666;" data-i18n="emergency_desc">Hayati tehlike veya acil tıbbi yardım durumunda bu butona basın.</p>
                 <button id="emergencyBtn" class="btn-primary" style="background-color: #c0392b; width:100%; margin-top:10px; padding: 15px; font-size: 1.1rem;">
@@ -167,6 +188,38 @@
         </div>
     </div>
 
+    <!-- AI Chat Modal -->
+    <div id="aiChatModal" class="modal">
+        <div class="modal-content" style="max-width: 500px; height: 80vh; display: flex; flex-direction: column;">
+            <span class="close-modal">&times;</span>
+            <h3 data-i18n="ai_chat_header">Yapay Zeka Danışmanı</h3>
+            <div id="aiChatMessages" style="flex: 1; overflow-y: auto; padding: 10px; border: 1px solid #eee; margin: 10px 0; border-radius: 5px; display: flex; flex-direction: column; gap: 10px;">
+                <!-- Messages go here -->
+                <div class="ai-msg" style="background: #f1f1f1; padding: 8px 12px; border-radius: 15px 15px 15px 0; align-self: flex-start; max-width: 80%; font-size: 0.9rem;" data-i18n="ai_initial_msg">
+                    Merhaba! Ben psikolojik danışmanınız. Bugün nasıl hissediyorsunuz? Size beslenme veya ruh halinizle ilgili nasıl yardımcı olabilirim?
+                </div>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="aiChatInput" placeholder="Mesajınızı yazın..." data-i18n-placeholder="ai_input_placeholder" style="flex: 1; padding: 10px; border: 1px solid #ddd; border-radius: 5px;">
+                <button id="sendAiMsgBtn" class="btn-primary" style="padding: 10px 20px;"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Breathing Exercise Modal -->
+    <div id="breathingModal" class="modal">
+        <div class="modal-content" style="max-width: 400px; text-align: center;">
+            <span class="close-modal">&times;</span>
+            <h3 data-i18n="breathing_title">Nefes Egzersizi</h3>
+            <div id="breathingCircleContainer" style="margin: 30px auto; width: 200px; height: 200px; position: relative; display: flex; align-items: center; justify-content: center;">
+                <div id="breathingCircle" style="width: 100px; height: 100px; background: rgba(52, 152, 219, 0.3); border-radius: 50%; transition: all 4s ease-in-out;"></div>
+                <div id="breathingText" style="position: absolute; font-weight: bold; color: #2980b9;" data-i18n="breath_in">Nefes Al</div>
+            </div>
+            <p id="breathingInstruction" style="color: #666;" data-i18n="breathing_instruction">Mavi daire büyürken nefes alın, küçülürken nefes verin.</p>
+            <button id="stopBreathingBtn" class="btn-primary" style="margin-top: 20px; background-color: #e74c3c;" data-i18n="stop_exercise">Egzersizi Bitir</button>
+        </div>
+    </div>
+
     <!-- Leaflet JS -->
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
     
@@ -174,6 +227,7 @@
     <script src="js/data.js"></script>
     <script src="js/lang.js"></script>
     <script src="js/map.js"></script>
+    <script src="js/ai.js"></script>
     <script src="js/app.js"></script>
 
     <!-- Notes Modal -->
@@ -184,6 +238,18 @@
             <div id="modalNotesList" class="notes-list">
                 <!-- Notlar buraya gelecek -->
             </div>
+            
+            <!-- AI Rapor Alanı (Doktorlar için) -->
+            <div id="aiReportSection" style="display:none; margin-top:15px; padding:10px; background:#f0f7ff; border:1px solid #3498db; border-radius:5px;">
+                <h4 style="color:#2980b9; margin:0 0 10px 0;"><i class="fas fa-robot"></i> Yapay Zeka Hasta Özeti</h4>
+                <button id="getAiReportBtn" class="btn-primary" style="font-size:0.8rem; padding:5px 10px; background:#3498db;">
+                    <i class="fas fa-file-medical-alt"></i> AI'dan Rapor Talep Et
+                </button>
+                <div id="aiReportContent" style="display:none; margin-top:10px; font-size:0.85rem; line-height:1.4; color:#333;">
+                    <!-- AI raporu buraya gelecek -->
+                </div>
+            </div>
+
             <div class="add-note-form">
                 <textarea id="newNoteText" placeholder="Notunuzu buraya yazın..." data-i18n-placeholder="notes_placeholder"></textarea>
                 <button id="saveNoteBtn" class="btn-primary" data-i18n="add_note_btn">Not Ekle</button>

@@ -11,8 +11,22 @@ const STORAGE_KEYS = {
 };
 
 const DataManager = {
+    // Depolama Kontrolü
+    checkStorage: function() {
+        try {
+            localStorage.setItem('test', 'test');
+            localStorage.removeItem('test');
+            return true;
+        } catch(e) {
+            console.error('Depolama erişimi engellendi! (Tracking Prevention)', e);
+            alert('Tarayıcınızın gizlilik ayarları (Tracking Prevention) yerel depolama alanına erişimi engelliyor. Lütfen tarayıcı ayarlarından "İzleme Engelleme" seviyesini "Dengeli"ye çekin veya bu site için istisna tanımlayın.');
+            return false;
+        }
+    },
+
     // Kullanıcı İşlemleri
     getUsers: function() {
+        if (!this.checkStorage()) return [];
         const users = localStorage.getItem(STORAGE_KEYS.USERS);
         return users ? JSON.parse(users) : [];
     },
@@ -85,11 +99,13 @@ const DataManager = {
 
     // --- Kaynak Noktaları (Su, Yemek vb.) ---
     getResources: function() {
+        if (!this.checkStorage()) return [];
         const resources = localStorage.getItem(STORAGE_KEYS.RESOURCES);
         return resources ? JSON.parse(resources) : [];
     },
 
     saveResource: function(resource) {
+        if (!this.checkStorage()) return null;
         const resources = this.getResources();
         resource.id = Date.now().toString();
         resources.push(resource);
@@ -188,11 +204,13 @@ const DataManager = {
 
     // Konteyner İşlemleri
     getContainers: function() {
+        if (!this.checkStorage()) return [];
         const containers = localStorage.getItem(STORAGE_KEYS.CONTAINERS);
         return containers ? JSON.parse(containers) : [];
     },
 
     saveContainer: function(container) {
+        if (!this.checkStorage()) return null;
         const containers = this.getContainers();
         container.id = Date.now().toString() + Math.random().toString(36).substr(2, 5);
         container.createdAt = new Date().toISOString();

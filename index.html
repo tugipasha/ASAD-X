@@ -33,39 +33,34 @@
 
             <!-- Kayıt Formu -->
             <form id="registerForm" class="hidden-form">
-                <h2 data-i18n="register_header">Kayıt Ol</h2>
+                <h2 data-i18n="register_header">Kayıt ol</h2>
                 <div class="input-group">
-                    <i class="fas fa-user"></i>
-                    <input type="text" id="regUsername" placeholder="Kullanıcı Adı" data-i18n-placeholder="register_username" required>
+                    <input type="text" id="regUsername" placeholder="kullanıcı adı" data-i18n-placeholder="register_username" required>
                 </div>
                 <div class="input-group">
-                    <i class="fas fa-id-card"></i>
-                    <input type="text" id="regName" placeholder="Ad Soyad" data-i18n-placeholder="register_name" required>
+                    <input type="text" id="regName" placeholder="ad soyad" data-i18n-placeholder="register_name" required>
                 </div>
                 <div class="input-group">
-                    <i class="fas fa-lock"></i>
-                    <input type="password" id="regPassword" placeholder="Şifre" data-i18n-placeholder="register_password" required>
+                    <input type="password" id="regPassword" placeholder="şifre" data-i18n-placeholder="register_password" required>
                 </div>
                 
-                <div class="input-group">
-                    <i class="fas fa-user-tag"></i>
-                    <select id="regRole" required>
-                        <option value="kullanici" data-i18n="role_user">Kullanıcı (Afetzede)</option>
-                        <option value="doktor" data-i18n="role_doctor">Doktor</option>
+                <div class="input-group" style="flex-direction: column; align-items: flex-start;">
+                    <small style="color: #666; margin-bottom: 5px;" data-i18n="role_label">Herhangi bir görevli olarak gidiyorsanız seçiniz</small>
+                    <select id="regRole" required style="width: 100%;">
+                        <option value="doktor" data-i18n="role_doctor">Sağlık çalışanı</option>
+                        <option value="psikolog" data-i18n="role_psychologist">Psikolog</option>
+                        <option value="gonullu" data-i18n="role_volunteer">Gönüllü Yardımcı</option>
                         <option value="guvenlik" data-i18n="role_security">Güvenlik Görevlisi</option>
+                        <option value="kullanici" data-i18n="role_user" selected>Hiçbiri</option>
                     </select>
                 </div>
 
-                <!-- Kullanıcıya özel alanlar -->
-                <div id="userFields" class="conditional-fields">
-                    <div class="input-group">
-                        <i class="fas fa-wheelchair"></i>
-                        <input type="text" id="regDisability" placeholder="Engel Durumu (Varsa)" data-i18n-placeholder="disability_placeholder">
-                    </div>
-                    <div class="input-group">
-                        <i class="fas fa-hand-holding-medical"></i>
-                        <input type="text" id="regNeeds" placeholder="Acil İhtiyaçlar" data-i18n-placeholder="needs_placeholder">
-                    </div>
+                <div class="input-group">
+                    <input type="number" id="regOccupancy" placeholder="konteynerde kaç kişi yaşamaktasınız tıklayınız" data-i18n-placeholder="occupancy_label" min="1">
+                </div>
+
+                <div class="input-group">
+                    <input type="text" id="regSpecialNeeds" placeholder="konteynerda bebek Engelli bulunmakta mıdır belirtiniz" data-i18n-placeholder="special_needs_label">
                 </div>
 
                 <button type="submit" class="btn-primary" data-i18n="register_btn">Kayıt Ol</button>

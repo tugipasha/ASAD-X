@@ -35,6 +35,34 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- AI RAPORLARI (YENİ) ---
+    const getAiReportBtn = document.getElementById('getAiReportBtn');
+    if (getAiReportBtn) {
+        getAiReportBtn.addEventListener('click', async () => {
+            const userId = getAiReportBtn.getAttribute('data-user-id');
+            if (!userId) return;
+
+            const originalText = getAiReportBtn.innerHTML;
+            getAiReportBtn.disabled = true;
+            getAiReportBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Rapor Hazırlanıyor...';
+
+            try {
+                const report = await AiManager.generateUserSummary(userId);
+                const reportDiv = document.getElementById('aiReportContent');
+                if (reportDiv) {
+                    reportDiv.innerHTML = report.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
+                    reportDiv.style.display = 'block';
+                }
+            } catch (error) {
+                console.error('Rapor hatası:', error);
+                alert('Rapor hazırlanırken bir hata oluştu.');
+            } finally {
+                getAiReportBtn.disabled = false;
+                getAiReportBtn.innerHTML = originalText;
+            }
+        });
+    }
+
     if (closeMissingBtn) {
         closeMissingBtn.addEventListener('click', () => {
             if (missingModal) missingModal.style.display = 'none';
@@ -526,6 +554,9 @@ function setupUserInterface(user) {
     if (user.shelterInfo) {
         document.getElementById('shelterInfo').value = user.shelterInfo;
     }
+    if (user.occupancy) {
+        document.getElementById('occupancyCount').value = user.occupancy;
+    }
 
     // Bilgileri Güncelle Butonu
     const updateStatusBtn = document.getElementById('updateStatusBtn');
@@ -536,10 +567,12 @@ function setupUserInterface(user) {
         });
 
         const shelterInfo = document.getElementById('shelterInfo').value;
+        const occupancyCount = document.getElementById('occupancyCount').value;
 
         // Kullanıcı nesnesini güncelle
         user.needsList = selectedNeeds;
         user.shelterInfo = shelterInfo;
+        user.occupancy = occupancyCount ? parseInt(occupancyCount) : 1;
         
         // Eski "needs" alanını da geriye dönük uyumluluk için güncelle (opsiyonel ama iyi olur)
         user.needs = selectedNeeds.join(", ");
@@ -712,6 +745,7 @@ function loadMapData(filter = 'all') {
     MapManager.clearMarkers();
     const listContainer = document.getElementById('listContainer');
     listContainer.innerHTML = '';
+    let count = 0;
 
     // --- 1. KULLANICI KONTEYNERLARI ---
     const containers = DataManager.getContainers();
@@ -931,6 +965,14 @@ function loadResources(filter = 'all') {
                 iconType = 'hospital'; iconColor = '#e74c3c'; iconClass = 'fa-clinic-medical'; break;
             case 'tent': 
                 iconType = 'tent'; iconColor = '#27ae60'; iconClass = 'fa-campground'; break;
+            case 'fire':
+                iconType = 'fire'; iconColor = '#d35400'; iconClass = 'fa-fire-extinguisher'; break;
+            case 'security':
+                iconType = 'security'; iconColor = '#2c3e50'; iconClass = 'fa-shield-halved'; break;
+            case 'paramedic':
+                iconType = 'medical'; iconColor = '#e74c3c'; iconClass = 'fa-user-nurse'; break;
+            case 'pharmacy':
+                iconType = 'pharmacy'; iconColor = '#8e44ad'; iconClass = 'fa-pills'; break;
         }
 
         const quantity = res.quantity !== undefined ? res.quantity : 0;
@@ -1012,6 +1054,10 @@ function getResourceName(type) {
         case 'food': return t('resource_type_food');
         case 'medical': return t('resource_type_medical');
         case 'tent': return t('resource_type_tent');
+        case 'fire': return t('resource_type_fire');
+        case 'security': return t('resource_type_security');
+        case 'paramedic': return t('resource_type_paramedic');
+        case 'pharmacy': return t('resource_type_pharmacy');
         default: return t('resource_label').replace(':', '');
     }
 }
@@ -1103,6 +1149,21 @@ window.openUserModal = function(userId) {
         resolveBtn.style.display = 'block';
     } else {
         resolveBtn.style.display = 'none';
+    }
+
+    // AI Raporu Kontrolü (Sadece Doktorlar için)
+    const aiReportSection = document.getElementById('aiReportSection');
+    const getAiReportBtn = document.getElementById('getAiReportBtn');
+    const aiReportContent = document.getElementById('aiReportContent');
+    const currentUser = DataManager.getCurrentUser();
+
+    if (aiReportSection && currentUser.role === 'doktor') {
+        aiReportSection.style.display = 'block';
+        getAiReportBtn.setAttribute('data-user-id', userId);
+        aiReportContent.style.display = 'none'; // Yeni modal açıldığında içeriği gizle
+        aiReportContent.innerHTML = '';
+    } else if (aiReportSection) {
+        aiReportSection.style.display = 'none';
     }
 
     modal.style.display = 'block';

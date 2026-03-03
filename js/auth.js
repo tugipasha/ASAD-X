@@ -36,10 +36,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Rol değişince alanları göster/gizle
     regRoleSelect.addEventListener('change', (e) => {
+        const userFields = document.getElementById('userFields');
+        const occupancyField = document.getElementById('regOccupancy')?.parentElement;
+        const specialNeedsField = document.getElementById('regSpecialNeeds')?.parentElement;
+
         if (e.target.value === 'kullanici') {
-            userFields.style.display = 'block';
+            if (occupancyField) occupancyField.style.display = 'flex';
+            if (specialNeedsField) specialNeedsField.style.display = 'flex';
         } else {
-            userFields.style.display = 'none';
+            if (occupancyField) occupancyField.style.display = 'none';
+            if (specialNeedsField) specialNeedsField.style.display = 'none';
         }
     });
 
@@ -68,8 +74,12 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         if (role === 'kullanici') {
-            newUser.disability = document.getElementById('regDisability').value;
-            newUser.needs = document.getElementById('regNeeds').value;
+            const occupancy = document.getElementById('regOccupancy').value;
+            const specialNeeds = document.getElementById('regSpecialNeeds').value;
+            
+            newUser.occupancy = occupancy ? parseInt(occupancy) : 1;
+            newUser.needs = specialNeeds;
+            newUser.needsList = specialNeeds ? specialNeeds.split(',').map(s => s.trim()) : [];
         }
 
         DataManager.saveUser(newUser);
